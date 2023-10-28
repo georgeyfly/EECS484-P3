@@ -76,6 +76,7 @@ public class GetData {
                 user_info.put("user_id", user_id);
                 user_info.put("first_name", first_name);
                 user_info.put("last_name", last_name);
+                user_info.put("gender", gender);
                 user_info.put("YOB", YOB);
                 user_info.put("MOB", MOB);
                 user_info.put("DOB", DOB);
@@ -103,7 +104,7 @@ public class GetData {
                 // find all friend id
                 JSONArray friends_id = new JSONArray();
                 try (Statement stmt1 = oracleConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
-                    ResultSet rst1 = stmt.executeQuery(
+                    ResultSet rst1 = stmt1.executeQuery(
                         " Select user2_id" +
                         " FROM " + friendsTableName +
                         " WHERE user1_id = " + user_id
