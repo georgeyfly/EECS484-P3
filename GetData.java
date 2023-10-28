@@ -53,7 +53,7 @@ public class GetData {
                 "       c1.country_name AS current_country," + 
                 "       c2.city_name AS hometown_city, c2.state_name AS hometown_state," + 
                 "       c2.country_name AS hometown_country" +
-                " FROM " + userTableName + " u"
+                " FROM " + userTableName + " u" +
                 " JOIN " + currentCityTableName + " cu ON cu.user_id = u.user_id" +
                 " JOIN " + cityTableName + " c1 ON c1.city_id = cu.current_city_id" +
                 " JOIN " + hometownCityTableName + " ht ON ht.user_id = u.user_id " +
