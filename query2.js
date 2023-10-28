@@ -7,6 +7,7 @@
 // Return nothing.
 
 function unwind_friends(dbname) {
+    // You can use db.getSiblingDB() as an alternative to the use <database> helper. 
     db = db.getSiblingDB(dbname);
 
     // TODO: unwind friends

@@ -1,5 +1,5 @@
-uniqname = uniqname # replace with your uniqname
-password = password # replace with your mongoDB password (default: your uniqname)
+uniqname = qiaozhih # replace with your uniqname
+# password = qiaozhih # replace with your mongoDB password (default: your uniqname)
 
 compile:
 	javac -Xlint:-unchecked -cp "ojdbc6.jar:json-20151123.jar:json_simple-1.1.jar:" Main.java GetData.java
@@ -15,29 +15,32 @@ run:
 loginmongo:
 	@echo "You must edit the uniqname and password in Makefile"
 	@echo "You may need to run 'module load mongodb' as well on CAEN."
-	mongo $(uniqname) --host eecs484.eecs.umich.edu -u $(uniqname) -p $(password)
+	# mongo $(uniqname) --host eecs484.eecs.umich.edu -u $(uniqname) -p $(password)
 
 setupsampledb:
 	@echo "You must edit the uniqname and password in Makefile"
 	@echo "You may need to run 'module load mongodb' as well on CAEN."
 	# drop all existing collections in mongodb
-	mongo $(uniqname) -u $(uniqname) -p $(password) --host eecs484.eecs.umich.edu --eval "db.dropDatabase()"
+	# mongo $(uniqname) -u $(uniqname) -p $(password) --host eecs484.eecs.umich.edu --eval "db.dropDatabase()"
+	mongosh --eval "db.dropDatabase()"
 	# import data into mongodb
-	mongoimport --host eecs484.eecs.umich.edu --username $(uniqname) --password $(password) --collection users --db $(uniqname) --file  sample.json --jsonArray
+	# mongoimport --host eecs484.eecs.umich.edu --username $(uniqname) --password $(password) --collection users --db $(uniqname) --file  sample.json --jsonArray
+	mongoimport --collection users --db $(uniqname) --file  sample.json --jsonArray
 
 setupmydb:
 	@echo "You must edit the uniqname and password in Makefile"
 	@echo "You may need to run 'module load mongodb' as well on CAEN."
 	# drop all existing collections in mongodb
-	mongo $(uniqname) -u $(uniqname) -p $(password) --host eecs484.eecs.umich.edu --eval "db.dropDatabase()"
+	# mongo $(uniqname) -u $(uniqname) -p $(password) --host eecs484.eecs.umich.edu --eval "db.dropDatabase()"
+	mongo --eval "db.dropDatabase()"
 	# import data into mongodb
-	mongoimport --host eecs484.eecs.umich.edu --username $(uniqname) --password $(password)  --collection users --db $(uniqname) --file  output.json --jsonArray
-
+	# mongoimport --host eecs484.eecs.umich.edu --username $(uniqname) --password $(password)  --collection users --db $(uniqname) --file  output.json --jsonArray
 mongotest:
 	@echo "Running test.js using the database. Run make setupsampledb or make setupmydb before this."
 	@echo "You must edit the uniqname and password in Makefile"
 	@echo "You may need to run 'module load mongodb' as well on CAEN."
-	mongo $(uniqname) -u $(uniqname) -p $(password) --host eecs484.eecs.umich.edu < test.js
+	# mongo $(uniqname) -u $(uniqname) -p $(password) --host eecs484.eecs.umich.edu < test.js
+	mongo < test.js
 	@echo "Local tests in test.js have been run."
 
 clean:
