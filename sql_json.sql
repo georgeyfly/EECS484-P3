@@ -10,3 +10,8 @@ JOIN project3.public_cities c1 ON c1.city_id = cu.current_city_id
 JOIN project3.public_user_hometown_cities ht ON ht.user_id = u.user_id 
 JOIN project3.public_cities c2 ON c2.city_id = ht.hometown_city_id
 JOIN project3.public_friends f ON f.user1_id = u.user_id;
+
+
+Select f.user2_id
+FROM project3.public_friends f 
+WHERE f.user1_id = ?
