@@ -45,7 +45,6 @@ function suggest_friends(year_diff, dbname) {
             }
         }
     ]).toArray();
-    
     relevant_info.forEach(function(userA){
         relevant_info.forEach(function(userB){
             if (userA.gender === "male" &&
