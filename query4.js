@@ -19,6 +19,29 @@ function suggest_friends(year_diff, dbname) {
 
     let pairs = [];
     // TODO: implement suggest friends
-
+    const relevant_info = db.users.aggregate([
+        {
+            $project: {
+                user_id: 1,
+                friends: 1,
+                gender: 1,
+                YOB: 1,
+                hometowncity: "$hometown.city"
+            }
+        }
+    ]);
+    relevant_info.forEach(function(userA){
+        relevant_info.forEach(function(userB){
+            if (userA.gender === "male" &&
+                userB.gender === "female" &&
+                Math.abs(userA.YOB - userB.YOB) < year_diff &&
+                userA.friends.indexOf(userB.user_id) === -1 &&
+                userB.friends.indexOf(userA.user_id) === -1 &&
+                userA.hometowncity === userB.hometowncity
+            ){
+                pairs.push([userA.user_id, userB.user_id]);
+            }
+        });
+    });
     return pairs;
 }
