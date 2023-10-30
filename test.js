@@ -17,17 +17,17 @@ function cleanUp(){
     load("query8.js");
 
     print();
-    // print("=== Test 1 ===");
-    // let test1 = find_user("Bucklebury", dbname);
-    // // print(test1); // uncomment this line to print the query1 output
-    // let ans1 = test1.length;
-    // if (ans1 == 42) {
-    //     print("Local test passed! Partially correct.");
-    // } else {
-    //     print("Local test failed!");
-    //     print("Expected 42 users from Bucklebury, you found", ans1, "users.");
-    // }
-    // cleanUp();
+    print("=== Test 1 ===");
+    let test1 = find_user("Bucklebury", dbname);
+    // print(test1); // uncomment this line to print the query1 output
+    let ans1 = test1.length;
+    if (ans1 == 42) {
+        print("Local test passed! Partially correct.");
+    } else {
+        print("Local test failed!");
+        print("Expected 42 users from Bucklebury, you found", ans1, "users.");
+    }
+    cleanUp();
 
     print("=== Test 2 ===");
     unwind_friends(dbname);
@@ -126,7 +126,7 @@ function cleanUp(){
         finalize: city_average_friendcount_finalizer,
     });
     let test8 = db.friend_city_population.find();
-    // test8.forEach(printjson); // unconmment this line to print the query8 output
+    test8.forEach(printjson); // unconmment this line to print the query8 output
     let ans8 = test8.count();
     if (ans8 == 16) {
         print("Local test passed! Partially correct.");
