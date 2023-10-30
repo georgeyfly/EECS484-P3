@@ -25,6 +25,7 @@ function unwind_friends(dbname) {
     },
     {
       $project: {
+        _id: 0,
         user_id: 1,
         friends: 1,
       },

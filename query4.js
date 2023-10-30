@@ -15,6 +15,21 @@
 // Return an array of arrays.
 
 function suggest_friends(year_diff, dbname) {
+    // db = db.getSiblingDB(dbname);
+
+    // let pairs = [];
+    // // TODO: implement suggest friends
+    // const relevant_info = db.users.aggregate([
+    //     {
+    //         $project: {
+    //             user_id: 1,
+    //             friends: 1,
+    //             gender: 1,
+    //             YOB: 1,
+    //             hometowncity: "$hometown.city"
+    //         }
+    //     }
+    // ]).toArray();
     db = db.getSiblingDB(dbname);
 
     let pairs = [];
@@ -29,7 +44,8 @@ function suggest_friends(year_diff, dbname) {
                 hometowncity: "$hometown.city"
             }
         }
-    ]);
+    ]).toArray();
+    
     relevant_info.forEach(function(userA){
         relevant_info.forEach(function(userB){
             if (userA.gender === "male" &&

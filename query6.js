@@ -43,6 +43,6 @@ function find_average_friendcount(dbname) {
         }
     ]).toArray();
 
-    return result.length() > 0 ? result[0].avg_count: 0;
+    return result.length > 0 ? result[0].avg_count: 0;
 }
 

@@ -22,25 +22,22 @@ setupsampledb:
 	@echo "You may need to run 'module load mongodb' as well on CAEN."
 	# drop all existing collections in mongodb
 	mongo $(uniqname) -u $(uniqname) -p $(password) --host eecs484.eecs.umich.edu --eval "db.dropDatabase()"
-	# mongosh --eval "db.dropDatabase()"
 	# import data into mongodb
 	mongoimport --host eecs484.eecs.umich.edu --username $(uniqname) --password $(password) --collection users --db $(uniqname) --file  sample.json --jsonArray
-	# mongoimport --collection users --db $(uniqname) --file  sample.json --jsonArray
 
 setupmydb:
 	@echo "You must edit the uniqname and password in Makefile"
 	@echo "You may need to run 'module load mongodb' as well on CAEN."
 	# drop all existing collections in mongodb
 	mongo $(uniqname) -u $(uniqname) -p $(password) --host eecs484.eecs.umich.edu --eval "db.dropDatabase()"
-	mongo --eval "db.dropDatabase()"
 	# import data into mongodb
 	mongoimport --host eecs484.eecs.umich.edu --username $(uniqname) --password $(password)  --collection users --db $(uniqname) --file  output.json --jsonArray
+
 mongotest:
 	@echo "Running test.js using the database. Run make setupsampledb or make setupmydb before this."
 	@echo "You must edit the uniqname and password in Makefile"
 	@echo "You may need to run 'module load mongodb' as well on CAEN."
 	mongo $(uniqname) -u $(uniqname) -p $(password) --host eecs484.eecs.umich.edu < test.js
-	mongo < test.js
 	@echo "Local tests in test.js have been run."
 
 clean:
