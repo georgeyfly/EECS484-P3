@@ -19,7 +19,7 @@ function cleanUp(){
     print();
     print("=== Test 1 ===");
     let test1 = find_user("Bucklebury", dbname);
-    // print(test1); // uncomment this line to print the query1 output
+    print(test1); // uncomment this line to print the query1 output
     let ans1 = test1.length;
     if (ans1 == 42) {
         print("Local test passed! Partially correct.");
@@ -48,7 +48,7 @@ function cleanUp(){
     let ans3 = 0;
     if (test3.hasNext()) {
         test3 = test3.next().users;
-        // print(test3) // uncomment this line to print the query3 output
+        print(test3) // uncomment this line to print the query3 output
         ans3 = test3.length;
     }
     if (ans3 == 43) {
@@ -73,7 +73,7 @@ function cleanUp(){
 
     print("=== Test5 === (This test can take up to a minute)");
     let test5 = oldest_friend(dbname);
-    // printjson(test5); // uncomment this line to print the query5 output
+    printjson(test5); // uncomment this line to print the query5 output
     if (Object.keys(test5).length == 798) {
         if (test5.hasOwnProperty(799)) {
             let ans5 = test5[799];
@@ -110,7 +110,7 @@ function cleanUp(){
         finalize: num_month_finalizer,
     });
     let test7 = db.born_each_month.find();
-    // test7.forEach(printjson); // uncomment this line to print the query7 output
+    test7.forEach(printjson); // uncomment this line to print the query7 output
     let ans7 = test7.count();
     if (ans7 == 12) {
         print("Local test passed! Partially correct.");
