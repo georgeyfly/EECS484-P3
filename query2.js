@@ -32,7 +32,7 @@ function unwind_friends(dbname) {
     },
     {
       $out: "flat_users",
-    },
+    }
   ]);
   return;
 }

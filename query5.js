@@ -12,12 +12,50 @@ function oldest_friend(dbname) {
 
     let results = {};
     // TODO: implement oldest friends
-    let pipeline1 = [
-        { $unwind: "$friends" },
+    db.users.aggregate([
+        {
+          $unwind: "$friends",
+        },
+        {
+          $project: {
+            _id: 0,
+            user_id: 1,
+            friends: 1,
+          },
+        },
+        {
+            $group: {_id: "$friends", lessfriends: {$push: "$user_id"}}
+        },
+        {
+          $out: "less_friends",
+        }
+      ]);
+
+
+      db.users.aggregate([
+        {
+            $lookup: {
+                from: "less_friends",
+                localField: "user_id",
+                foreignField: "_id",
+                as: "combinedFriends"
+            }
+        },
+        {
+            $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$combinedFriends", 0 ] }, "$$ROOT" ] } }
+         },
+         { $project: { combinedFriends: 0 } },
+        { $project: { _id: 0, user_id: 1, allfriends: {$setUnion: [{$ifNull: ["$friends", []]}, {$ifNull: ["$lessfriends", []]} ] } } },
+        { $sort: { user_id : 1}},
+        { $out: "merged_friends",}
+         ]);
+        
+        db.merged_friends.aggregate([
+            { $unwind: "$allfriends" },
         {
             $lookup: {
                 from: "users",
-                localField: "friends",
+                localField: "allfriends",
                 foreignField: "user_id",
                 as: "friendDetails"
             }
@@ -34,54 +72,13 @@ function oldest_friend(dbname) {
                 _id: "$user_id",
                 oldestFriend: { $first: "$friendDetails.user_id" }
             }
-        }
-    ];
-
-    let aggCursor1 = db.users.aggregate(pipeline1);
-    
-    while(aggCursor1.hasNext()) {
-        let doc = aggCursor1.next();
-        results[doc._id] = doc.oldestFriend;
-    }
-
-    // Second, find the oldest friends considering users who list the current user_id in their "friends" array
-    let allUserIds = db.users.find({}, {user_id: 1}).map(doc => doc.user_id);
-
-    let pipeline2 = [
-        { $match: { user_id: { $in: allUserIds } } },
-        { $unwind: "$friends" },
-        {
-            $lookup: {
-                from: "users",
-                localField: "user_id",
-                foreignField: "user_id",
-                as: "userDetails"
-            }
         },
-        { $unwind: "$userDetails" },
-        {
-            $sort: {
-                "userDetails.YOB": 1,
-                "userDetails.user_id": 1
-            }
-        },
-        {
-            $group: {
-                _id: "$friends",
-                oldestFriend: { $first: "$userDetails.user_id" }
-            }
-        }
-    ];
-    
+        { $out: "oldestFriend",}
+        ]);
 
-    let aggCursor2 = db.users.aggregate(pipeline2);
-
-    while (aggCursor2.hasNext()) {
-        let doc = aggCursor2.next();
-        if (!results.hasOwnProperty(doc._id) || doc.oldestFriend < results[doc._id]) {
+        db.oldestFriend.find().forEach(function(doc) {
             results[doc._id] = doc.oldestFriend;
-        }
-    }
-
+        });
+      
     return results;
 }
